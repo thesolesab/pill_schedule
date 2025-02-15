@@ -1,0 +1,15 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label>
+    Имя
+    <input formControlName="username" type="text" name="" id="" placeholder="Введи свое имя">
+  </label>
+  <label>
+    Твой рост
+    <input formControlName="userHeight" type="number" name="" id="" placeholder="Введи свой рост в см">
+  </label>
+  <label>
+    Текущий вес
+    <input formControlName="userWeight" type="number" name="" id="" placeholder="Введи свой вес в кг">
+  </label>
+  <button type="submit">Вход</button>
+</form>
