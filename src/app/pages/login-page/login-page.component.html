@@ -1,15 +1,23 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <label>
-    Имя
-    <input formControlName="username" type="text" name="" id="" placeholder="Введи свое имя">
-  </label>
-  <label>
-    Твой рост
-    <input formControlName="userHeight" type="number" name="" id="" placeholder="Введи свой рост в см">
-  </label>
-  <label>
-    Текущий вес
-    <input formControlName="userWeight" type="number" name="" id="" placeholder="Введи свой вес в кг">
-  </label>
-  <button type="submit">Вход</button>
-</form>
+<div class="container">
+  <h1>Привет! 👋</h1>
+  <p>Добро пожаловать в журнал здоровья! Здесь ты можешь отслеживать свои параметры и следить за изменениями.</p>
+  <p>🛑 <strong>Важно:</strong> Все данные сохраняются <strong>только на этом устройстве</strong>. У нас нет сервера
+    (да,
+    грустно, но факт 😅), так что никто, кроме тебя, их не увидит.</p>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <label>
+      Имя
+      <input formControlName="username" type="text" name="" id="" placeholder="Введи свое имя">
+    </label>
+    <label>
+      Твой рост
+      <input formControlName="userHeight" type="number" name="" id="" placeholder="Введи свой рост в см">
+    </label>
+    <label>
+      Текущий вес
+      <input formControlName="userWeight" type="number" name="" id="" placeholder="Введи свой вес в кг">
+    </label>
+    <button type="submit">Вход</button>
+  </form>
+</div>

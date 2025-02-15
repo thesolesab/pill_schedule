@@ -18,15 +18,11 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Promise<boolean> {
     const userData = await this.indexedDbService.getAllData('user-store');
-    console.log(userData);
 
-    if (userData) {
-      // Если данные есть, перенаправляем на главную страницу
-      this.router.navigate(['/home']);
-      return false;
-    } else {
-      // Если данных нет, разрешаем доступ к странице логина
+    if (userData && userData.length > 0) {
       return true;
     }
+
+    return this.router.navigate(['/login']);
   }
 }

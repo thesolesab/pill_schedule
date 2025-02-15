@@ -22,7 +22,6 @@ export class LoginPageComponent {
     username: new FormControl(null, Validators.required),
     userHeight: new FormControl(null, Validators.required),
     userWeight: new FormControl(null, Validators.required),
-    // userWaist: new FormControl(null, Validators.required)
   })
 
   async onSubmit() {
