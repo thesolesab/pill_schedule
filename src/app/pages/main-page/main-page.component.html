@@ -1,5 +1,6 @@
-@for (pill of pills; track pill.pillName) {
-<app-pill [pill]="pill"></app-pill>
+<app-pill *ngFor="let pill of pills" [pill]="pill" (pillDeleted)="onPillDeleted()"></app-pill>
+@if (pills.length ===0) {
+<p>Добавьте таблетки здесь</p>
 }
 <button (click)="openDialog()" class="addPillButton">+</button>
 <app-add-data-dialog *ngIf="isDialogOpen" (close)="closeDialog()"></app-add-data-dialog>

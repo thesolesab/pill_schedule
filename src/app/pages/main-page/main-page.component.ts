@@ -33,4 +33,8 @@ export class MainPageComponent implements OnInit {
   async loadPills() {
     this.pills = await this.indexedDbService.getAllData('pills-store');
   }
+
+  onPillDeleted() {
+    this.loadPills()
+  }
 }

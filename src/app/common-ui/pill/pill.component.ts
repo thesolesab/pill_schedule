@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { NgClass, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Pill } from '../../data/interfaces/pill.interface';
@@ -13,6 +13,7 @@ import { IndexedDbService } from '../../data/services/indexed-db.service';
 })
 export class PillComponent {
   @Input() pill!: Pill;
+  @Output() pillDeleted = new EventEmitter<void>();  // Создаем событие
 
   days = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
   selectedDays: string[] = [];
@@ -48,6 +49,14 @@ export class PillComponent {
       this.indexedDbService.updateData('pills-store', this.pill)
         .then(() => console.log('Таблетка обновлена в IndexedDB'))
         .catch(err => console.error('Ошибка обновления в IndexedDB:', err));
+    }
+  }
+
+  deletePill() {
+    if (this.pill) {
+      this.indexedDbService.deleteData('pills-store', this.pill.pillName)
+        .then(() => this.pillDeleted.emit())
+        .catch(err => console.error('Ошибка удаления из IndexedDB:', err))
     }
   }
 }
