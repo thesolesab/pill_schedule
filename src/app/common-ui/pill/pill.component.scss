@@ -3,10 +3,11 @@
     border: 1px solid var(--light-color);
     border-radius: 10px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px; /* `grid-gap` заменён на `gap` */
+    grid-template-columns: 50% 50%;
+    gap: 2px;
     padding: 20px 5px;
     margin: 5px;
+    // width: fit-content;
   }
 
   &__element {
@@ -47,13 +48,18 @@
     input,
     select {
       height: 36px;
-      width: max-content;
+      width: 145px;
       margin: 0;
       background-color: var(--light-color);
       color: var(--dark-color);
       border: 1px solid var(--dark-color);
       padding: 5px;
       border-radius: 5px;
+      text-align: center;
+    }
+
+    select {
+      width: 60px;
     }
 
     select option {
