@@ -4,50 +4,63 @@
     border-radius: 10px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 20px;
+    gap: 2px; /* `grid-gap` заменён на `gap` */
+    padding: 20px 5px;
+    margin: 5px;
   }
+
   &__element {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
   }
-  &__schedule {
-    .days {
-      display: flex;
-      gap: 5px;
-      .day-btn {
-        padding: 8px 12px;
-        border: 1px solid var(--dark-color);
-        background-color: var(--light-color);
-        cursor: pointer;
-        border-radius: 5px;
-        transition: background 0.2s;
-        color: var(--dark-color);
-        &.active {
-          background-color: var(--primary-color);
-          color: var(--light-color);
-        }
+
+  &__schedule .days {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+
+    .day-btn {
+      padding: 8px 12px;
+      border: 1px solid var(--dark-color);
+      background-color: var(--light-color);
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.2s;
+      color: var(--dark-color);
+
+      &.active {
+        background-color: var(--primary-color);
+        color: var(--light-color);
       }
     }
   }
+
   &__dose {
     display: flex;
-    gap: 10px;
-    align-items: stretch;
-    input {
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+
+    input,
+    select {
+      height: 36px;
+      width: max-content;
+      margin: 0;
       background-color: var(--light-color);
       color: var(--dark-color);
+      border: 1px solid var(--dark-color);
+      padding: 5px;
+      border-radius: 5px;
     }
-    select {
-      width: max-content;
-      & option {
-        background-color: var(--dark-color);
-        color: var(--light-color);
-        font-size: 16px;
-        padding: 10px;
-        border: 1px solid var(--light-color);
-      }
+
+    select option {
+      background-color: var(--dark-color);
+      color: var(--light-color);
+      font-size: 16px;
+      padding: 10px;
     }
   }
 }
