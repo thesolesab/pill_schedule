@@ -1,0 +1,24 @@
+<div class="pill__wrapper">
+  <div class="pill__element">
+    <h2>Таблетка</h2>
+    <div class="pill__schedule">
+      <div class="days">
+        <button *ngFor="let day of days" (click)="toggleDay(day)" [ngClass]="{'active': selectedDays.includes(day)}"
+          class="day-btn">
+          {{ day }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="pill__element">
+    <label for="doseValue">
+      <h2>Дозировка</h2>
+    </label>
+    <div class="pill__dose">
+      <input type="number" id="doseValue" [(ngModel)]="doseValue" placeholder="Введите дозу" />
+      <select [(ngModel)]="selectedUnit">
+        <option *ngFor="let unit of doseUnits" [value]="unit">{{ unit }}</option>
+      </select>
+    </div>
+  </div>
+</div>

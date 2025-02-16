@@ -16,7 +16,13 @@ export class LoginPageComponent {
     private router: Router
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.indexedDbService.getAllData('user-store').then(el => {
+      if (el.length > 0) {
+        this.router.navigate(['/home'])
+      }
+    })
+  }
 
   form = new FormGroup({
     username: new FormControl(null, Validators.required),
