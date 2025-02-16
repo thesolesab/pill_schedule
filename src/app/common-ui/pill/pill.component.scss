@@ -3,11 +3,9 @@
     border: 1px solid var(--light-color);
     border-radius: 10px;
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 1fr 1fr 30px;
     gap: 2px;
     padding: 20px 5px;
-    margin: 5px;
-    // width: fit-content;
   }
 
   &__element {
@@ -68,5 +66,13 @@
       font-size: 16px;
       padding: 10px;
     }
+  }
+  &__delete {
+    background-color: var(--error-color);
+    display: flex;
+    cursor: pointer;
+    writing-mode: vertical-rl;
+    justify-content: center;
+    align-items: center;
   }
 }

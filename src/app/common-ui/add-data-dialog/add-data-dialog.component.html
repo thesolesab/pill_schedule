@@ -1,0 +1,17 @@
+<div class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="close.emit()">&times;</span>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <label>
+        Название препарата
+        <input type="text" formControlName="pillName" placeholder="Введите название">
+      </label>
+
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" (click)="close.emit()">Отмена</button>
+        <button type="submit" [disabled]="form.invalid" class="save-btn">Добавить</button>
+      </div>
+    </form>
+  </div>
+</div>

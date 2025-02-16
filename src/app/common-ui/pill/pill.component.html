@@ -1,6 +1,7 @@
+@if (pill) {
 <div class="pill__wrapper">
   <div class="pill__element">
-    <h2>Таблетка</h2>
+    <h2>{{pill.pillName}}</h2>
     <div class="pill__schedule">
       <div class="days">
         <button *ngFor="let day of days" (click)="toggleDay(day)" [ngClass]="{'active': selectedDays.includes(day)}"
@@ -15,10 +16,13 @@
       <h2>Дозировка</h2>
     </label>
     <div class="pill__dose">
-      <input type="number" id="doseValue" [(ngModel)]="doseValue" placeholder="Введите дозу" />
-      <select [(ngModel)]="selectedUnit">
+      <input type="number" id="doseValue" [(ngModel)]="doseValue" (ngModelChange)="updatePill()"
+        placeholder="Введите дозу" />
+      <select [(ngModel)]="selectedUnit" (ngModelChange)="updatePill()">
         <option *ngFor="let unit of doseUnits" [value]="unit">{{ unit }}</option>
       </select>
     </div>
   </div>
+  <div class="pill__delete">delete</div>
 </div>
+}

@@ -1,2 +1,5 @@
-<p>main-page works!</p>
-<app-pill></app-pill>
+@for (pill of pills; track pill.pillName) {
+<app-pill [pill]="pill"></app-pill>
+}
+<button (click)="openDialog()" class="addPillButton">+</button>
+<app-add-data-dialog *ngIf="isDialogOpen" (close)="closeDialog()"></app-add-data-dialog>

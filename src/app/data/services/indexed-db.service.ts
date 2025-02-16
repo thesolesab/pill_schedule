@@ -18,6 +18,9 @@ export class IndexedDbService {
         if (!db.objectStoreNames.contains('user-store')) {
           db.createObjectStore('user-store', { keyPath: 'username' });
         }
+        if (!db.objectStoreNames.contains('pills-store')) {
+          db.createObjectStore('pills-store', { keyPath: 'pillName' });
+        }
       }
     });
   }
