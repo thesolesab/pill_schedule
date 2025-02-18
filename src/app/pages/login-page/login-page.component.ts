@@ -41,16 +41,14 @@ export class LoginPageComponent {
         year: '2-digit'
       });
 
-      const imt = Math.round(userWeight! / ((userHeight! / 100) ** 2));
+
 
       const weightHistory = [{ weight: userWeight, date: formattedDate }]
-      const IMTHistory = [{ imt, date: formattedDate }]
 
       const data = {
         username,
         userHeight,
-        weightHistory,
-        IMTHistory
+        weightHistory
       };
       await this.indexedDbService.addData('user-store', data);
       this.router.navigate(['/home'])

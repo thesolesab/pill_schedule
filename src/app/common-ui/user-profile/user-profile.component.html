@@ -1,0 +1,11 @@
+@if (user) {
+<div class="profile">
+  <div class="name">{{user.username}}, {{user.userHeight/100}} м</div>
+  <div class="imt">Ваш ИМТ: {{imt}} - {{ getIMTDescription() }}</div>
+  <label>
+    Текущий вес: {{user.weightHistory.at(-1)?.weight}} кг
+    <input type="number" [(ngModel)]="weightNow" (ngModelChange)="updateWeight()"
+      placeholder="Введи свой нынешний вес в кг">
+  </label>
+</div>
+}

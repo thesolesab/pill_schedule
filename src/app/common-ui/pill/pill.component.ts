@@ -18,7 +18,7 @@ export class PillComponent {
   days = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
   doseUnits: string[] = ['мг', 'таблетки', 'мл', 'капли'];
 
-  constructor(private indexedDbService: IndexedDbService) {}
+  constructor(private indexedDbService: IndexedDbService) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['pill'] && this.pill) {
