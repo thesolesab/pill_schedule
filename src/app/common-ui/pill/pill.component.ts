@@ -13,50 +13,36 @@ import { IndexedDbService } from '../../data/services/indexed-db.service';
 })
 export class PillComponent {
   @Input() pill!: Pill;
-  @Output() pillDeleted = new EventEmitter<void>();  // Создаем событие
+  @Output() pillDeleted = new EventEmitter<void>();
 
   days = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
-  selectedDays: string[] = [];
-  doseValue: number | null = null;
-  selectedUnit: string = 'мг';
   doseUnits: string[] = ['мг', 'таблетки', 'мл', 'капли'];
 
-  constructor(private indexedDbService: IndexedDbService) { }
+  constructor(private indexedDbService: IndexedDbService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['pill'] && this.pill) {
-      this.selectedDays = this.pill.selectedDays || [];
-      this.doseValue = this.pill.doseValue || null;
-      this.selectedUnit = this.pill.selectedUnit || 'мг';
+      this.pill.selectedDays ||= [];
+      this.pill.doseValue ||= null;
+      this.pill.selectedUnit ||= 'мг';
     }
   }
 
   toggleDay(day: string) {
-    if (this.pill.selectedDays.includes(day)) {
-      this.pill.selectedDays = this.pill.selectedDays.filter(d => d !== day);
-    } else {
-      this.pill.selectedDays.push(day);
-    }
+    const index = this.pill.selectedDays.indexOf(day);
+    index > -1 ? this.pill.selectedDays.splice(index, 1) : this.pill.selectedDays.push(day);
     this.updatePill();
   }
 
   updatePill() {
-    if (this.pill) {
-      this.pill.selectedDays = this.selectedDays;
-      this.pill.doseValue = this.doseValue;
-      this.pill.selectedUnit = this.selectedUnit;
-
-      this.indexedDbService.updateData('pills-store', this.pill)
-        .then(() => console.log('Таблетка обновлена в IndexedDB'))
-        .catch(err => console.error('Ошибка обновления в IndexedDB:', err));
-    }
+    this.indexedDbService.updateData('pills-store', this.pill)
+      .then(() => console.log('Таблетка обновлена в IndexedDB'))
+      .catch(err => console.error('Ошибка обновления в IndexedDB:', err));
   }
 
   deletePill() {
-    if (this.pill) {
-      this.indexedDbService.deleteData('pills-store', this.pill.pillName)
-        .then(() => this.pillDeleted.emit())
-        .catch(err => console.error('Ошибка удаления из IndexedDB:', err))
-    }
+    this.indexedDbService.deleteData('pills-store', this.pill.pillName)
+      .then(() => this.pillDeleted.emit())
+      .catch(err => console.error('Ошибка удаления из IndexedDB:', err));
   }
 }
