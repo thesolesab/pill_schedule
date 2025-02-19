@@ -4,7 +4,7 @@
   <div class="imt">Ваш ИМТ: {{imt}} - {{ getIMTDescription() }}</div>
   <label>
     Текущий вес: {{user.weightHistory.at(-1)?.weight}} кг
-    <input type="number" [(ngModel)]="weightNow" (ngModelChange)="updateWeight()" (blur)=""
+    <input type="number" [(ngModel)]="weightNow" (ngModelChange)="updateWeight()" (blur)="onBlur()"
       placeholder="Введи свой нынешний вес в кг">
   </label>
 </div>
