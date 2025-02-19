@@ -37,7 +37,10 @@ export class UserProfileComponent {
     { range: [40, 100], message: 'ожирение 3 степени (морбидное)' },
   ]
 
-  constructor(private indexedDbService: IndexedDbService) { }
+  constructor(
+private indexedDbService: IndexedDbService,
+    private router: Router
+) { }
 
   calculateIMT() {
     if (this.user && this.user.weightHistory?.length > 0 && this.user.userHeight) {
@@ -60,6 +63,7 @@ this.weightNow = null
 
 async deleteAll(){
 await this.indexedDbService.clearAllData()
+this.router.navigate(['/login'])
 }
 
   getIMTDescription(): string {
