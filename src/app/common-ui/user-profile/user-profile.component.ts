@@ -53,6 +53,10 @@ export class UserProfileComponent {
     }
   }
 
+onBlur(){
+this.weightNow = null
+}
+
   getIMTDescription(): string {
     const description = this.imtDescr.find(item => this.imt >= item.range[0] && this.imt <= item.range[1]);
     return description ? description.message : 'Неизвестно';
