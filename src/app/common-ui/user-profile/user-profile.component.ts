@@ -3,6 +3,7 @@ import { User, WeightEntry } from '../../data/interfaces/user.interface';
 import { CommonModule, NgClass } from '@angular/common';
 import { IndexedDbService } from '../../data/services/indexed-db.service';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
