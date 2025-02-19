@@ -5,4 +5,13 @@
     grid-template-columns: 1fr 30px;
     gap: 2px;
     padding: 20px 5px;
+
+.delete {
+    background-color: var(--error-color);
+    display: flex;
+    cursor: pointer;
+    writing-mode: vertical-rl;
+    justify-content: center;
+    align-items: center;
+}
 }
