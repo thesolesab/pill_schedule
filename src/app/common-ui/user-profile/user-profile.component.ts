@@ -57,6 +57,10 @@ onBlur(){
 this.weightNow = null
 }
 
+async deleteAll(){
+await this.indexedDbService.clearAllData()
+}
+
   getIMTDescription(): string {
     const description = this.imtDescr.find(item => this.imt >= item.range[0] && this.imt <= item.range[1]);
     return description ? description.message : 'Неизвестно';
