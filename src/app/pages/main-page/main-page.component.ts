@@ -6,22 +6,22 @@ import { AddDataDialogComponent } from '../../common-ui/add-data-dialog/add-data
 import { CommonModule } from '@angular/common';
 import { UserProfileComponent } from "../../common-ui/user-profile/user-profile.component";
 import { User } from '../../data/interfaces/user.interface';
+import { UserPageComponent } from "../user-page/user-page.component";
 
 @Component({
   selector: 'app-main-page',
-  imports: [PillComponent, AddDataDialogComponent, CommonModule, UserProfileComponent],
+  imports: [PillComponent, AddDataDialogComponent, CommonModule, UserPageComponent],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
 export class MainPageComponent implements OnInit {
   pills: Pill[] = [];
   isDialogOpen = false;
-  user: any = {};
 
   constructor(private indexedDbService: IndexedDbService) { }
 
   ngOnInit() {
-    this.loadAll(); // Загружаем таблетки при старте
+    this.loadPills(); // Загружаем таблетки при старте
   }
 
   openDialog(): void {
@@ -30,15 +30,14 @@ export class MainPageComponent implements OnInit {
 
   closeDialog(): void {
     this.isDialogOpen = false;
-    this.loadAll(); // После закрытия диалога загружаем список заново
+    this.loadPills(); // После закрытия диалога загружаем список заново
   }
 
-  async loadAll() {
+  async loadPills() {
     this.pills = await this.indexedDbService.getAllData('pills-store');
-    this.user = (await this.indexedDbService.getAllData('user-store')).at(0);
   }
 
   onPillDeleted() {
-    this.loadAll()
+    this.loadPills()
   }
 }

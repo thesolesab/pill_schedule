@@ -3,7 +3,6 @@ import { User, WeightEntry } from '../../data/interfaces/user.interface';
 import { CommonModule, NgClass } from '@angular/common';
 import { IndexedDbService } from '../../data/services/indexed-db.service';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -14,10 +13,7 @@ import { Router } from '@angular/router';
 })
 export class UserProfileComponent {
   @Input() user?: User;
-
   weightNow: number | null = null
-
-
   imt: number = 0;
 
   ngOnChanges(changes: SimpleChanges) {
@@ -38,9 +34,8 @@ export class UserProfileComponent {
   ]
 
   constructor(
-private indexedDbService: IndexedDbService,
-    private router: Router
-) { }
+    private indexedDbService: IndexedDbService,
+  ) { }
 
   calculateIMT() {
     if (this.user && this.user.weightHistory?.length > 0 && this.user.userHeight) {
@@ -57,14 +52,11 @@ private indexedDbService: IndexedDbService,
     }
   }
 
-onBlur(){
-this.weightNow = null
-}
+  onBlur() {
+    this.weightNow = null
+  }
 
-async deleteAll(){
-await this.indexedDbService.clearAllData()
-this.router.navigate(['/login'])
-}
+
 
   getIMTDescription(): string {
     const description = this.imtDescr.find(item => this.imt >= item.range[0] && this.imt <= item.range[1]);
