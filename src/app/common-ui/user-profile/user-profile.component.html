@@ -7,5 +7,6 @@
     <input type="number" [(ngModel)]="weightNow" (ngModelChange)="updateWeight()" (blur)="onBlur()"
       placeholder="Введи свой нынешний вес в кг">
   </label>
+<button (click)="deleteAll()">Удалить все данные</button>
 </div>
 }
