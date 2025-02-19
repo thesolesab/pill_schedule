@@ -1,12 +1,12 @@
 @if (user) {
 <div class="profile">
-  <div class="name">{{user.username}}, {{user.userHeight/100}} м</div>
-  <div class="imt">Ваш ИМТ: {{imt}} - {{ getIMTDescription() }}</div>
+  <div class="profile__name">{{user.username}}, {{user.userHeight/100}} м</div>
+  <div class="profile__imt">Ваш ИМТ: {{imt}} - {{ getIMTDescription() }}</div>
   <label>
     Текущий вес: {{user.weightHistory.at(-1)?.weight}} кг
     <input type="number" [(ngModel)]="weightNow" (ngModelChange)="updateWeight()" (blur)="onBlur()"
       placeholder="Введи свой нынешний вес в кг">
   </label>
-<button (click)="deleteAll()">Удалить все данные</button>
 </div>
+<div (click)="deleteAll()">Удалить все данные</div>
 }
