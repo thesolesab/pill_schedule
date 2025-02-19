@@ -55,5 +55,17 @@ export class IndexedDbService {
     await this.ensureDbInitialized();
     return this.db.delete(storeName, id);
   }
+
+async clearAllData() {
+    await this.ensureDbInitialized();
+
+    // Получаем список всех хранилищ
+    const storeNames = this.db.objectStoreNames;
+
+    // Очищаем каждое хранилище
+    for (const storeName of storeNames) {
+      await this.db.clear(storeName);
+   }
+  }
 }
 
