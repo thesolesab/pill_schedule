@@ -1,4 +1,8 @@
-:host{
-display: grid;
-grid-template-column: 1fr 30%;
+:host {
+    border: 1px solid var(--light-color);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 30px;
+    gap: 2px;
+    padding: 20px 5px;
 }
