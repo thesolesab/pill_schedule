@@ -1,8 +1,11 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { ChartConfiguration, ChartOptions } from 'chart.js';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { ChartConfiguration } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { Chart, registerables } from 'chart.js';
-import { WeightEntry } from '../../data/interfaces/user.interface';
+import { ImtEntry, WeightEntry } from '../../data/interfaces/user.interface';
+import { ChartConfigService } from '../../data/services/chart-config.service';
+import { ChartDataService } from '../../data/services/chart-data.service';
+import { ImtService } from '../../data/services/imt.service';
 
 @Component({
   selector: 'app-user-chart',
@@ -11,45 +14,47 @@ import { WeightEntry } from '../../data/interfaces/user.interface';
   templateUrl: './user-chart.component.html',
   styleUrl: './user-chart.component.scss'
 })
-export class UserChartComponent {
+export class UserChartComponent implements OnInit, OnChanges {
   @Input() weightHistory!: WeightEntry[];
+  @Input() userHeight!: number;
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
-  // Данные для графика
-  public lineChartData: ChartConfiguration<'line'>['data'] = {
-    labels: [],
-    datasets: []
-  };
+  imtHistory: ImtEntry[] = []
 
-  ngOnChanges(changes: SimpleChanges) {
-    // Проверяем, были ли изменения в weightHistory
-    if (changes['weightHistory'] && this.weightHistory) {
-      this.updateChartData();
-    }
-  }
-
-  // Опции графика
-  public lineChartOptions: ChartOptions<'line'> = {
-    responsive: true,
-  };
-
-  // Легенда
+  public lineChartData: ChartConfiguration<'line'>['data'] = { labels: [], datasets: [] };
+  public lineChartOptions;
   public lineChartLegend = true;
+
+  constructor(
+    public chartConfigService: ChartConfigService,
+    private chartDataService: ChartDataService,
+    private imtService: ImtService
+  ) {
+    this.lineChartOptions = this.chartConfigService.getChartOptions();
+  }
 
   ngOnInit(): void {
     Chart.register(...registerables);
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['weightHistory'] && this.weightHistory) {
+      this.imtHistory = this.weightHistory.map(el => ({
+        imt: this.imtService.calculateIMT([el], this.userHeight),
+        date: el.date
+      }))
+
+      this.updateChartData();
+      this.chart?.update();
+    }
+  }
 
   private updateChartData() {
     this.lineChartData = {
-      labels: this.weightHistory.map(el => el.date), // Используем даты как метки
+      labels: this.weightHistory.map(el => el.date),
       datasets: [
-        {
-          data: this.weightHistory.map(el => el.weight), // Используем вес как данные
-          label: 'Weight History',
-          borderColor: 'white',
-          backgroundColor: 'rgb(60, 255, 0)',
-        }
+        this.chartDataService.getWeightDataset(this.weightHistory),
+        this.chartDataService.getImtDataset(this.imtHistory)
       ]
     };
   }

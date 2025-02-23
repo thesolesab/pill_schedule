@@ -1,7 +1,7 @@
 <div class="container">
   <div class="">
-    <app-user-profile [user]="user"></app-user-profile>
-    <app-user-chart [weightHistory]="weightHistory"></app-user-chart>
+    <app-user-profile [user]="user" (weightHistoryUpdated)="onWeightHistoryUpdated($event)"></app-user-profile>
+    <app-user-chart [weightHistory]="weightHistory" [userHeight]="this.user.userHeight"></app-user-chart>
   </div>
   <div class="delete" (click)="deleteAll()">Удалить все данные</div>
 </div>

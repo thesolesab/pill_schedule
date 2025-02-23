@@ -17,7 +17,7 @@ export class UserPageComponent {
     userHeight: 0,
     weightHistory: []
   };
-  weightHistory: WeightEntry[] | null = null
+  weightHistory: WeightEntry[] = []
 
   constructor(
     private indexedDbService: IndexedDbService,
@@ -36,5 +36,10 @@ export class UserPageComponent {
   async deleteAll() {
     await this.indexedDbService.clearAllData()
     this.router.navigate(['/login'])
+  }
+
+  // Обработчик события обновления weightHistory
+  onWeightHistoryUpdated(updatedWeightHistory: WeightEntry[]) {
+    this.weightHistory = updatedWeightHistory;
   }
 }

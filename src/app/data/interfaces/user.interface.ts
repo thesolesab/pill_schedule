@@ -3,9 +3,13 @@ export interface WeightEntry {
   date: string; // или Date, если будете работать с объектами Date
 }
 
+export interface ImtEntry {
+  imt: number;
+  date: string; // или Date, если будете работать с объектами Date
+}
 
 export interface User {
-  username: string,
+  username?: string,
   userHeight: number,
   weightHistory: WeightEntry[],
 }

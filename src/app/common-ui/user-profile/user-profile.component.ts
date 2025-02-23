@@ -1,8 +1,9 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { User, WeightEntry } from '../../data/interfaces/user.interface';
-import { CommonModule, NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { IndexedDbService } from '../../data/services/indexed-db.service';
 import { FormsModule } from '@angular/forms';
+import { ImtService } from '../../data/services/imt.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,76 +14,58 @@ import { FormsModule } from '@angular/forms';
 })
 export class UserProfileComponent {
   @Input() user?: User;
-  weightNow: number | null = null
+  @Output() weightHistoryUpdated = new EventEmitter<WeightEntry[]>();
+
+  weightNow: number | null = null;
   imt: number = 0;
-
-  ngOnChanges(changes: SimpleChanges) {
-    // Проверяем, были ли изменения в user
-    if (changes['user'] && this.user) {
-      this.calculateIMT();  // Вычисляем ИМТ при изменении user
-    }
-  }
-
-  imtDescr = [
-    { range: [0, 16], message: 'выраженный дефицит массы тела' },
-    { range: [16, 17.9], message: 'недостаточная масса тела' },
-    { range: [18, 24.9], message: 'нормальный вес' },
-    { range: [25, 29.9], message: 'избыточная масса тела (предожирение)' },
-    { range: [30, 34.9], message: 'ожирение 1 степени' },
-    { range: [35, 39.9], message: 'ожирение 2 степени' },
-    { range: [40, 100], message: 'ожирение 3 степени (морбидное)' },
-  ]
 
   constructor(
     private indexedDbService: IndexedDbService,
+    private imtService: ImtService
   ) { }
 
-  calculateIMT() {
-    if (this.user && this.user.weightHistory?.length > 0 && this.user.userHeight) {
-      const lastWeight = this.user.weightHistory.at(-1)?.weight;
-      const heightInMeters = this.user.userHeight / 100;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['user'] && this.user) {
+      this.updateIMT();
+    }
+  }
 
-      if (lastWeight && heightInMeters > 0) {
-        this.imt = Math.round(lastWeight / (heightInMeters ** 2));
-      } else {
-        this.imt = 0;
-      }
-    } else {
-      this.imt = 0;
+  updateIMT() {
+    if (this.user) {
+      this.imt = this.imtService.calculateIMT(this.user.weightHistory, this.user.userHeight);
     }
   }
 
   onBlur() {
-    this.weightNow = null
+    this.weightNow = null;
   }
 
-
-
   getIMTDescription(): string {
-    const description = this.imtDescr.find(item => this.imt >= item.range[0] && this.imt <= item.range[1]);
-    return description ? description.message : 'Неизвестно';
+    return this.imtService.getIMTDescription(this.imt);
   }
 
   updateWeight() {
     if (this.weightNow) {
-      const date = new Date();
-      const formattedDate = date.toLocaleDateString('ru-RU', {
+      const date = new Date().toLocaleDateString('ru-RU', {
         day: '2-digit',
         month: '2-digit',
         year: '2-digit'
       });
 
-      const weightObj: WeightEntry = {
-        weight: this.weightNow,
-        date: formattedDate
+      const weightObj: WeightEntry = { weight: this.weightNow, date };
+
+      const updatedWeightHistory = [...this.user!.weightHistory];
+      if (this.user?.weightHistory.at(-1)?.date !== weightObj.date) {
+        updatedWeightHistory.push(weightObj);
+      } else {
+        updatedWeightHistory.splice(-1, 1, weightObj);
       }
 
-      if (this.user?.weightHistory.at(-1)?.date !== weightObj.date) {
-        this.user?.weightHistory.push(weightObj)
-      } else {
-        this.user.weightHistory.splice(-1, 1, weightObj)
-      }
-      this.calculateIMT()
+      this.user!.weightHistory = updatedWeightHistory;
+
+      this.updateIMT();
+      this.weightHistoryUpdated.emit(this.user!.weightHistory);
+
       this.indexedDbService.updateData('user-store', this.user)
         .then(() => console.log('Пользователь обновлен в IndexedDB'))
         .catch(err => console.error('Ошибка обновления в IndexedDB:', err));
