@@ -16,7 +16,7 @@ export class ChartConfigService {
         },
         title: {
           display: true,
-          text: 'Weight Over Time',
+          text: 'Журнал',
           color: 'white',
           font: { size: 16 }
         }
@@ -40,7 +40,7 @@ export class ChartConfigService {
           ticks: { color: 'white' },
           grid: { color: 'rgba(255, 255, 255, 0.1)' }
         },
-        y2: { // ✅ Вторая шкала (для ИМТ)
+        y2: {
           position: 'right',  // Разместить справа
           title: { display: true, text: 'ИМТ', color: 'lightblue' },
           ticks: { color: 'lightblue' },
