@@ -3,4 +3,5 @@ export interface Pill {
   pillName: string,
   selectedDays: string[],
   selectedUnit: string | null,
+  notifications?: string[]
 }

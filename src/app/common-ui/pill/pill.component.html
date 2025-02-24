@@ -1,13 +1,14 @@
 @if (pill) {
-<div class="pill__wrapper">
+<div class="pill">
   <div class="pill__element">
-    <h2>{{pill.pillName}}</h2>
+    <h2 class="pill__name">{{pill.pillName}}</h2>
     <div class="pill__schedule">
       <div class="days">
-        <button *ngFor="let day of days" (click)="toggleDay(day)"
-          [ngClass]="{'active': pill.selectedDays.includes(day)}" class="day-btn">
+        @for (day of days; track day) {
+        <button (click)="toggleDay(day)" [ngClass]="{'active': pill.selectedDays.includes(day)}" class="day-btn">
           {{ day }}
         </button>
+        }
       </div>
     </div>
   </div>
@@ -17,12 +18,32 @@
     </label>
     <div class="pill__dose">
       <input type="number" id="doseValue" [(ngModel)]="pill.doseValue" (ngModelChange)="updatePill()"
-        placeholder="Введите дозу" />
+        [ngModelOptions]="{ updateOn: 'blur' }" placeholder="Введите дозу" />
       <select [(ngModel)]="pill.selectedUnit" (ngModelChange)="updatePill()">
         <option *ngFor="let unit of doseUnits" [value]="unit">{{ unit }}</option>
       </select>
     </div>
   </div>
-  <div class="pill__delete" (click)="deletePill()">delete</div>
+  <div class="delete" (click)="deletePill()">delete</div>
+  <div class="pill__notifications" [ngClass]="{
+    'column':pill.notifications?.length === 0 || !pill.notifications,
+    'show': isExpanded
+  }">
+    @if (pill.notifications?.length === 0 || !pill.notifications) {
+    Уведомлений нет
+    } @else {
+    @for (notification of pill.notifications; track $index) {
+    <label>
+      <p> Ув. {{$index + 1 }}</p>
+      <input type="time" [(ngModel)]="pill.notifications[$index]" (blur)="updatePill()">
+      <span (click)="deleteNotify($index)"></span>
+    </label>
+    }
+    }
+    <button class="addButton" (click)="addNotify()">
+      +
+    </button>
+  </div>
+  <div class="expand" (click)="toggleExpand()" [ngClass]="{'rotate':!isExpanded}"></div>
 </div>
 }

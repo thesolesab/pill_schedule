@@ -1,11 +1,13 @@
 :host {
   display: grid;
-  grid-template-columns: 1fr 80%;
+  grid-template-columns: 1fr 40%;
   gap: 10px;
   padding: 20px;
   .pills {
     display: grid;
     gap: 10px;
+    align-items: center;
+    justify-items: center;
   }
   .addPillButton {
     margin: 0 auto;

@@ -1,11 +1,20 @@
 .pill {
-  &__wrapper {
-    border: 1px solid var(--light-color);
-    border-radius: 10px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 30px;
-    gap: 2px;
-    padding: 20px 5px;
+  border: 1px solid var(--light-color);
+  border-radius: 10px;
+  display: grid;
+  max-width: 730px;
+  grid-template-columns: calc((100% - 30px) / 2) 1fr 30px;
+  grid-template-rows: 1fr;
+  grid-template-areas:
+    "schedule dose delete"
+    "notify notify delete";
+  gap: 2px;
+  padding: 20px 5px;
+  position: relative;
+
+  &__name {
+    font-weight: bolder;
+    color: var(--primary-color);
   }
 
   &__element {
@@ -34,19 +43,21 @@
         background-color: var(--primary-color);
         color: var(--light-color);
       }
+
+      &:hover {
+        background-color: var(--hover-color);
+      }
     }
   }
 
   &__dose {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: 5px;
-    justify-content: center;
-
+    grid-template-columns: 1fr 1fr;
     input,
     select {
       height: 36px;
-      width: 145px;
+      // width: max-content;
       margin: 0;
       background-color: var(--light-color);
       color: var(--dark-color);
@@ -57,7 +68,7 @@
     }
 
     select {
-      width: 60px;
+      cursor: pointer;
     }
 
     select option {
@@ -66,13 +77,88 @@
       font-size: 16px;
       padding: 10px;
     }
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+    }
   }
-  &__delete {
-    background-color: var(--error-color);
-    display: flex;
+  .delete {
+    grid-area: delete;
+  }
+
+  .expand {
+    width: 18px;
+    height: 18px;
+    border-right: 3px solid var(--hover-color);
+    border-bottom: 3px solid var(--hover-color);
     cursor: pointer;
-    writing-mode: vertical-rl;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: rotate(45deg);
+    transition: all 0.3s ease;
+    &.rotate {
+      transform: rotate(-135deg);
+    }
+    &::after {
+      content: "";
+      width: 13px;
+      height: 13px;
+      // border: 1px solid;
+      position: absolute;
+      right: 5px;
+      bottom: 5px;
+      border-right: 3px solid var(--hover-color);
+      border-bottom: 3px solid var(--hover-color);
+      transition: all 0.3s ease;
+    }
+    &:hover {
+      &::after {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  &__notifications {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    grid-area: notify;
     justify-content: center;
-    align-items: center;
+    label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      span::after {
+        content: "";
+        border: 3px solid var(--error-color);
+        width: 20px;
+        cursor: pointer;
+        position: absolute;
+        top: 5px;
+        right: 0;
+      }
+    }
+    input {
+      width: min-content;
+    }
+    .addButton {
+      margin: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: inherit;
+      margin-bottom: 5px;
+    }
+    &.column {
+      flex-direction: column;
+      align-items: center;
+    }
+    &.show {
+      display: none;
+    }
   }
 }
