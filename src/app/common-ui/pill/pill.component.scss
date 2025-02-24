@@ -94,12 +94,12 @@
     border-bottom: 3px solid var(--hover-color);
     cursor: pointer;
     position: absolute;
-    bottom: 0;
+    bottom: 7px;
     left: 50%;
-    transform: rotate(45deg);
+    transform: translate(-50%) rotate(45deg);
     transition: all 0.3s ease;
     &.rotate {
-      transform: rotate(-135deg);
+      transform: translate(-50%) rotate(-135deg);
     }
     &::after {
       content: "";
