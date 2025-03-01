@@ -7,10 +7,23 @@
   grid-template-rows: 1fr;
   grid-template-areas:
     "schedule dose delete"
-    "notify notify delete";
-  gap: 2px;
+    "notify notify delete"
+    "expand expand delete";
+  gap: 5px;
   padding: 20px 5px;
   position: relative;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    row-gap: 8px;
+    grid-template-areas:
+      "schedule"
+      "dose"
+      "notify"
+      "expand"
+      "delete";
+    padding: 10px;
+  }
 
   &__name {
     font-weight: bolder;
@@ -77,47 +90,23 @@
       font-size: 16px;
       padding: 10px;
     }
-
-    @media (max-width: 768px) {
-      display: flex;
-      flex-direction: column;
-    }
   }
   .delete {
     grid-area: delete;
   }
 
   .expand {
-    width: 18px;
-    height: 18px;
-    border-right: 3px solid var(--hover-color);
-    border-bottom: 3px solid var(--hover-color);
+    grid-area: expand;
+    margin: 0 auto;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 20px solid var(--light-color);
+    transition: transform 0.3s ease;
+
     cursor: pointer;
-    position: absolute;
-    bottom: 7px;
-    left: 50%;
-    transform: translate(-50%) rotate(45deg);
-    transition: all 0.3s ease;
+
     &.rotate {
-      transform: translate(-50%) rotate(-135deg);
-    }
-    &::after {
-      content: "";
-      width: 13px;
-      height: 13px;
-      // border: 1px solid;
-      position: absolute;
-      right: 5px;
-      bottom: 5px;
-      border-right: 3px solid var(--hover-color);
-      border-bottom: 3px solid var(--hover-color);
-      transition: all 0.3s ease;
-    }
-    &:hover {
-      &::after {
-        width: 18px;
-        height: 18px;
-      }
+      transform: rotate(-180deg);
     }
   }
 
@@ -128,19 +117,30 @@
     align-items: flex-end;
     grid-area: notify;
     justify-content: center;
-    label {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      span::after {
-        content: "";
-        border: 3px solid var(--error-color);
-        width: 20px;
-        cursor: pointer;
-        position: absolute;
-        top: 5px;
-        right: 0;
+    transition-behavior: allow-discrete;
+    opacity: 1;
+    transition: opacity 0.7s ease;
+
+    &.initial-state {
+      opacity: 0;
+    }
+    .notification {
+      display: grid;
+      grid-template-areas:
+        "label delete"
+        "timer timer";
+      grid-template-columns: 1fr 1fr;
+      .label {
+        grid-area: label;
+      }
+      .delete {
+        grid-area: delete;
+        padding: 0;
+        margin: 0;
+        writing-mode: vertical-rl;
+      }
+      input {
+        grid-area: timer;
       }
     }
     input {
@@ -157,8 +157,9 @@
       flex-direction: column;
       align-items: center;
     }
-    &.show {
+    &.invisible {
       display: none;
+      opacity: 0;
     }
   }
 }

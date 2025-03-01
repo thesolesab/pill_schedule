@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { UserProfileComponent } from "../../common-ui/user-profile/user-profile.component";
 import { User } from '../../data/interfaces/user.interface';
 import { UserPageComponent } from "../user-page/user-page.component";
+import { NotificationsService } from '../../data/services/notifications.service';
 
 @Component({
   selector: 'app-main-page',
@@ -18,10 +19,24 @@ export class MainPageComponent implements OnInit {
   pills: Pill[] = [];
   isDialogOpen = false;
 
-  constructor(private indexedDbService: IndexedDbService) { }
+  constructor(
+    private indexedDbService: IndexedDbService,
+    private notificationsService: NotificationsService
+  ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.loadPills(); // Загружаем таблетки при старте
+    const permissionGranted = await this.notificationsService.requestPermission()
+    if (permissionGranted) {
+      this.notificationsService.showNotification('test', {
+        body: 'This is your weekly notification',
+        icon: 'assets/icons/drugs.png'
+      })
+      this.notificationsService.scheduleWeeklyNotification('Еженедельное уведомление', {
+        body: 'This is your weekly notification',
+        icon: 'assets/icons/drugs.png'
+      })
+    }
   }
 
   openDialog(): void {

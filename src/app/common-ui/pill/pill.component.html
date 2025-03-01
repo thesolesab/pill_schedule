@@ -27,17 +27,17 @@
   <div class="delete" (click)="deletePill()">delete</div>
   <div class="pill__notifications" [ngClass]="{
     'column':pill.notifications?.length === 0 || !pill.notifications,
-    'show': isExpanded
+    'invisible': isExpanded
   }">
     @if (pill.notifications?.length === 0 || !pill.notifications) {
     Уведомлений нет
     } @else {
     @for (notification of pill.notifications; track $index) {
-    <label>
-      <p> Ув. {{$index + 1 }}</p>
+    <div class="notification">
+      <div class="label"> Ув. {{$index + 1 }}</div>
       <input type="time" [(ngModel)]="pill.notifications[$index]" (blur)="updatePill()">
-      <span (click)="deleteNotify($index)"></span>
-    </label>
+      <div (click)="deleteNotify($index)" class="delete">Х</div>
+    </div>
     }
     }
     <button class="addButton" (click)="addNotify()">
